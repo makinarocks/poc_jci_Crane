@@ -61,6 +61,15 @@ def image_level_metrics(results, obj, metric):
         performance = calc_f1_max(gt, pr)
         # performance = f1_score(gt, pr.round())
         # assert f1_max == performance
+    elif metric == 'recall':
+        precision, recall, _ = precision_recall_curve(gt, pr)
+        f1 = 2 * precision * recall / (precision + recall + 1e-8)
+        performance = recall[f1.argmax()]  # best recall at max F1
+
+    elif metric == 'precision':
+        precision, recall, _ = precision_recall_curve(gt, pr)
+        f1 = 2 * precision * recall / (precision + recall + 1e-8)
+        performance = precision[f1.argmax()]  # best precision at max F1
     return performance
 
 def pixel_level_metrics(results, obj, metric):
@@ -134,7 +143,7 @@ def cal_pro_score_gpu(masks, amaps, max_step=200, expect_fpr=0.3):
     fprs = fprs[idxes]
     pros = pros[idxes]
     fprs = (fprs - fprs.min()) / (fprs.max() - fprs.min())
-    pro_auc = auc(fprs.cpu().numpy(), pros.cpu().numpy())
+    pro_auc = auc(fprs, pros)
     return pro_auc
 
 # https://github.com/M-3LAB/open-iad/blob/main/metric/mvtec3d/au_pro.py#L205
