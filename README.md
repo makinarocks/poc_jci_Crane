@@ -50,22 +50,33 @@ Crane is a zero-shot anomaly detection (ZSAD) framework that leverages a pre-tra
 ## Getting Started
 To reproduce the results, follow the instructions below to run inference and training:
 
-### 🧰 Installation
-All required libraries, including the correct PyTorch version, are specified in environment.yaml. Running setup.sh will automatically create the environment and install all dependencies.
+### 🧰 Installation(*)
+#### Environment
+- Python 3.10+
+- Pytorch 2.0+
+- CUDA 11.8+
+
+#### Step 1: Create a K8s Pod
+```bash
+git clone https://github.com/makinarocks/poc_jci_Crane.git && cd poc_jci_Crane
+cd infra
+make exp-pod
+```
+
+#### Step 2: Install Dependencies & Setup Datasets
+1. Download python dependencies
+2. Download ViT-B SAM checkpoint (.pth) file to `~/.cache/sam` directory
+3. Downlaod sample dataset VisA & make meta.json file
+4. Unzip 3 custom datasets & make meta.json files
 
 ```bash
-git clone https://github.com/AlirezaSalehy/Crane.git && cd Crane
 bash setup.sh
-conda activate crane_env
-```
-The required checkpoints for CLIP and DINO checkpoints will be downloaded automatically by the code and stored in `~/.cache`. However, the ViT-B SAM checkpoint must be downloaded manually.
-Please download `sam_vit_b_01ec64.pth` from the official Segment Anything repository [here](https://github.com/facebookresearch/segment-anything) to the following directory:
-```
-~/.cache/sam/sam_vit_b_01ec64.pth
 ```
 
 ### 📁 Datasets
 You can download the datasets from their official sources, and use utilities in `datasets/generate_dataset_json/` to generate a compatible meta.json. Alternatively from the [AdaCLIP repository](https://github.com/caoyunkang/AdaCLIP?tab=readme-ov-file#industrial-visual-anomaly-detection-datasets) which has provided a compatible format of the datasets. Place all datasets under `DATASETS_ROOT`, which is defined in [`./__init__.py`](__init__.py). 
+
+
 
 ### 🔍 Inference
 The checkpoints for our trained "default" model are available in [`checkpoints`](/checkpoints/) directory. After installing needed libraries, reproduce the results by running: 
