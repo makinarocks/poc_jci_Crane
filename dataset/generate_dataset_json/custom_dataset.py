@@ -1,11 +1,9 @@
 import os
 import json
+import argparse
 from pathlib import Path
 
 def generate_meta(dataset_root, image_exts=('.png', '.jpg', '.jpeg'), mask_exts=('.png', '.jpg', '.jpeg')):
-    import os
-    import json
-    from pathlib import Path
 
     meta = {"train": {}, "test": {}}
     dataset_root = Path(dataset_root)
@@ -70,7 +68,9 @@ def generate_meta(dataset_root, image_exts=('.png', '.jpg', '.jpeg'), mask_exts=
     print(f"✅ meta.json generated at {out_path}")
 
 if __name__ == "__main__":
-    DATASETS_ROOT = '/workspace/data/nail_dataset_v5_train'
-    # DATASETS_ROOT = '/workspace/data/nail_dataset_v5_test'
-    # DATASETS_ROOT = '/workspace/data/hard_test_case'
-    generate_meta(DATASETS_ROOT)
+    parser = argparse.ArgumentParser(description="Generate meta.json for dataset structure.")
+    parser.add_argument("-r", "--target", type=str, required=True,
+                        help="Target directory of the dataset (e.g., /workspace/poc_jci_Crane/nail_dataset_v5_train)")
+    
+    args = parser.parse_args()
+    generate_meta(args.target)
