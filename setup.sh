@@ -19,11 +19,11 @@ else
     echo "[1] requirements.txt not found. Skipping pip install."
 fi
 
-# 2. Download Hugging Face model (.pth) file to ~/.cache
+# 2. Download ViT-B SAM checkpoint (.pth) file to ~/.cache/sam
 echo "[2] Checking Hugging Face model file in ~/.cache..."
 
 HF_URL="https://huggingface.co/xingren23/comfyflow-models/resolve/976de8449674de379b02c144d0b3cfa2b61482f2/sams/sam_vit_b_01ec64.pth"
-HF_CACHE_DIR="$HOME/.cache"
+HF_CACHE_DIR="$HOME/.cache/sam"
 HF_FILE_NAME="sam_vit_b_01ec64.pth"
 HF_DEST_PATH="$HF_CACHE_DIR/$HF_FILE_NAME"
 
@@ -109,7 +109,7 @@ for zip_file in "${ZIP_FILES[@]}"; do
 
     # Run Python script
     echo "[4] Running Python script for: $unzip_dir"
-    python3 "$PYTHON_SCRIPT" --root "$unzip_dir"
+    python3 "$PYTHON_SCRIPT" --target "$unzip_dir"
 done
 
 echo "[✓] All tasks completed successfully."
